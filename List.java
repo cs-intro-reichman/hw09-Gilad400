@@ -30,8 +30,7 @@ public class List {
     /** GIVE Adds a CharData object with the given character to the beginning of this list. */
     public void addFirst(char chr) {
         CharData newCData = new CharData(chr); //creates a new CharData
-        Node newNode = new Node(newCData); //creates a new node
-        newNode.next = first; //new node -> first node
+        Node newNode = new Node(newCData, first); //creates a new node
         first = newNode; // first -> new node
         size++;
     }
@@ -40,6 +39,9 @@ public class List {
     public String toString() {
         // Starting from the first node, iterates through this list
         // and builds the string incrementally
+        if (size == 0) {
+            return "()";
+        }
         String str = "(";
         Node current = first;
         while (current != null) {
@@ -57,7 +59,7 @@ public class List {
         Node current = first;
         int index = 0;
         while (current != null) {
-            if (current.cp.equals(chr)) {
+            if (current.cp.chr == chr) {
                 return index;
             }
             current = current.next;
@@ -71,16 +73,16 @@ public class List {
      *  given chr to the beginning of this list. */
     public void update(char chr) {
         Node current = first;
-        int index = 0;
         while (current != null) {
-            if (current.cp.equals(chr)) {
+            if (current.cp.chr == chr) {
                 current.cp.count++;
                 break; // get out
             }
             current = current.next;
-            index = index +1;
         }
-        addFirst(chr); // char not found -> add first
+        if (current == null) {
+            addFirst(chr); // char not found -> add first
+        }
     }
 
     /** GIVE If the given character exists in one of the CharData objects
@@ -90,7 +92,7 @@ public class List {
         //Finds the node to remove, using to pointers
         Node prev = null;
         Node current = first;
-        while (current != null && !current.cp.equals(chr)) {
+        while (current != null && current.cp.chr == chr) {
             prev = current;
             current = current.next;
         }
@@ -113,17 +115,11 @@ public class List {
      *  If the index is negative or is greater than the size of this list, 
      *  throws an IndexOutOfBoundsException. */
     public CharData get(int index) {
-        if (index < 0 || index > size) {
+        if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Negative or to big index");
         }
-        Node current = first;
-        int pointer = 0;
-        while (index != pointer) {
-            current = current.next;
-            pointer++;
-        }
-        return current.cp; 
-
+        CharData[] list = toArray();
+        return list[index];
     }
 
     /** Returns an array of CharData objects, containing all the CharData objects in this list. */

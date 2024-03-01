@@ -1,6 +1,4 @@
 import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
 import java.util.Random;
 
 public class LanguageModel {
@@ -146,7 +144,7 @@ public class LanguageModel {
         int generatedTextLength = Integer.parseInt(args[2]);
         Boolean randomGeneration = args[3].equals("random");
         String fileName = args[4];
-        // Create LanguageModel object
+        // Create the LanguageModel object
         LanguageModel lm;
         if(randomGeneration) {
             lm = new LanguageModel(windowLength);
@@ -155,7 +153,7 @@ public class LanguageModel {
         }
         // Trains the model, creating the map.
         lm.train(fileName);
-        // Generates, and prints it.
+        // Generates text, and prints it.
         System.out.println(lm.generate(initialText, generatedTextLength));
     }
 }
